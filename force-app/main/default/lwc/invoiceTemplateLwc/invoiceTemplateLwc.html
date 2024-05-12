@@ -1,0 +1,192 @@
+<template>
+  <div if:true={showSpinner}>
+    <lightning-spinner alternative-text="Loading..." variant="brand">
+    </lightning-spinner>
+  </div>
+  <template if:true={areDetailsVisible}>
+    <div class="slds-grid pageBody">
+      <div class="slds-col slds-size_1-of-12 slds-p-horizontal_medium">
+      </div>
+      <div class="slds-col slds-size_10-of-12 slds-p-horizontal_medium">
+        <div class="slds-grid">
+          <div class="slds-col slds-size_1-of-12 slds-p-horizontal_medium">
+          </div>
+          <div class="slds-col slds-size_10-of-12 slds-p-horizontal_medium">
+            <lightning-card title={customINVTemplabel.Invoice_Template_Title} icon-name="custom:custom9">
+              <br />
+              <div class="slds-grid ">
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-input class="mandatoryfield" type="text" label={customINVTemplabel.nameText}
+                    value={templateNameValue} required="true" onchange={handleTemplateName}></lightning-input><br />
+                </div>
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium ">
+                  <p><img class="outputLogo" width="200" /></p>
+                  <template lwc:if={imageUploaded}>
+                    <lightning-button-icon icon-name="utility:delete" alternative-text="Delete"
+                      class="slds-m-left_xx-small" title="Delete" onclick={removeLogoHandle}></lightning-button-icon>
+                  </template>
+                   <lightning-input class="slds-file-selector__dropzone" type="file" accept=".jpeg, .jpg, .png" label="Upload Logo" onchange={openfileUpload}></lightning-input>
+
+                   <!-- <div class="slds-form-element">
+                    <span class="slds-form-element__label"
+                      id="file-selector-primary-label-133">{customINVTemplabel.Invoice_Template_Logo}</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-file-selector slds-file-selector_files">
+                        <div class="slds-file-selector__dropzone slds-has-drag-over">
+                          <input onchange={openfileUpload} type="file"
+                            class="slds-file-selector__input slds-assistive-text"
+                            accept=".png, .jpeg" id="file-upload-input-135"
+                            aria-labelledby="file-selector-primary-label-133 file-selector-secondary-label134" />
+                          <label class="slds-file-selector__body" for="file-upload-input-135"
+                            id="file-selector-secondary-label134">
+                            <span class="slds-file-selector__button slds-button slds-button_neutral">
+                              <svg class="slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#upload"></use>
+                              </svg>Upload Files</span>
+                            <span class="slds-file-selector__text slds-medium-show">or Drop Files Here</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>  -->
+                </div>
+              </div>
+
+              <div class="slds-grid ">
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Business_Name}
+                    label={customINVTemplabel.INV_Template_Business_Name} value={businessNameValue}
+                    placeholder="Select Field..." options={businessNameOptions} onchange={businessNameHandleChange}>
+                  </lightning-combobox> <br />
+                </div>
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Business_Phone}
+                    label={customINVTemplabel.INV_Template_Business_Phone} value={businessPhoneValue}
+                    placeholder="Select Field..." options={businessPhoneOptions}
+                    onchange={businessPhoneHandleChange}></lightning-combobox>
+                </div>
+              </div>
+              <div class="slds-m-horizontal_medium" style="background:#f3f3f3">
+                <p class="slds-p-horizontal_small">{customINVTemplabel.INV_Billing_Address_Information_Section}</p>
+              </div><br />
+              <div class="slds-grid ">
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_Street}
+                    label={customINVTemplabel.INV_Template_Billing_Street} value={businessStreetValue}
+                    placeholder="Select Field..." options={billingStreetOptions} onchange={businessStreetHandleChange}>
+                  </lightning-combobox> <br />
+
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_City}
+                    label={customINVTemplabel.INV_Template_Billing_City} value={businessCityValue}
+                    placeholder="Select Field..." options={billingCityOptions} onchange={businessCityHandleChange}>
+                  </lightning-combobox> <br />
+
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_Country}
+                    label={customINVTemplabel.INV_Template_Billing_Country} value={businessCountryValue}
+                    placeholder="Select Field..." options={billingCountryOptions}
+                    onchange={businessCountryHandleChange}>
+                  </lightning-combobox> <br />
+                </div>
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_State}
+                    label={customINVTemplabel.INV_Template_Billing_State} value={businessStateValue}
+                    placeholder="Select Field..." options={billingStateOptions} onchange={businessStateHandleChange}>
+                  </lightning-combobox><br />
+
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_Zip_Postal_Code}
+                    label={customINVTemplabel.INV_Template_Billing_Zip_Postal_Code} value={businessPinCodeValue}
+                    placeholder="Select Field..." options={billingPincodeOptions} onchange={businessZipHandleChange}>
+                  </lightning-combobox>
+                </div>
+              </div>
+              <!--Contact Billing Info Start-->
+              <div class="slds-m-horizontal_medium" style="background:#f3f3f3">
+                <p class="slds-p-horizontal_small">{customINVTemplabel.INV_Contact_Billing_Information_Section}</p>
+              </div><br />
+              <div class="slds-grid ">
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_Street}
+                    label={customINVTemplabel.INV_Template_Billing_Street} value={contactStreetValue}
+                    placeholder="Select Field..." options={contactStreetOptions} onchange={contactStreetHandleChange}>
+                  </lightning-combobox> <br />
+
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_City}
+                    label={customINVTemplabel.INV_Template_Billing_City} value={contactCityValue}
+                    placeholder="Select Field..." options={contactCityOptions} onchange={contactCityHandleChange}>
+                  </lightning-combobox> <br />
+
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_Country}
+                    label={customINVTemplabel.INV_Template_Billing_Country} value={contactCountryValue}
+                    placeholder="Select Field..." options={contactCountryOptions} onchange={contactCountryHandleChange}>
+                  </lightning-combobox> <br />
+                </div>
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_State}
+                    label={customINVTemplabel.INV_Template_Billing_State} value={contactStateValue}
+                    placeholder="Select Field..." options={contactStateOptions} onchange={contactStateHandleChange}>
+                  </lightning-combobox><br />
+
+                  <lightning-combobox class="mandatoryfield" required=true
+                    name={customINVTemplabel.INV_Template_Billing_Zip_Postal_Code}
+                    label={customINVTemplabel.INV_Template_Billing_Zip_Postal_Code} value={contactPinCodeValue}
+                    placeholder="Select Field..." options={contactPincodeOptions} onchange={contactZipHandleChange}>
+                  </lightning-combobox>
+                </div>
+              </div>
+              <!--Contact Billing Info End-->
+
+              <!--Product Info-->
+              <div class="slds-m-horizontal_medium" style="background:#f3f3f3">
+                <p class="slds-p-horizontal_small">{customINVTemplabel.INV_Product_Information_Section}</p>
+              </div><br />
+
+              <div class="slds-grid ">
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-combobox name={customINVTemplabel.INV_Template_Product_Quantity}
+                    label={customINVTemplabel.INV_Template_Product_Quantity} value={quantityValue}
+                    placeholder="Select Field..." options={quantityFieldOptions} onchange={quantityHandleChange}>
+                  </lightning-combobox> <br />
+
+                  <lightning-combobox name={customLabel.Description_Text} label={customLabel.Description_Text}
+                    value={prodDescriptionValue} placeholder="Select Field..." options={descriptionFieldOptions}
+                    onchange={descriptionHandleChange}>
+                  </lightning-combobox> <br />
+                </div>
+                <div class="slds-col slds-size_3-of-6 slds-p-horizontal_medium">
+                  <lightning-combobox name={customINVTemplabel.Unit_Price_Text}
+                    label={customINVTemplabel.Unit_Price_Text} value={unitPriceValue} placeholder="Select Field..."
+                    options={unitPriceFieldOptions} onchange={unitPriceHandleChange}>
+                  </lightning-combobox> <br />
+
+                  <lightning-combobox name={customLabel.Total_Text} label={customLabel.Total_Text}
+                    value={totalAmountValue} placeholder="Select Field..." options={amountFieldOptions}
+                    onchange={amountFieldHandleChange}>
+                  </lightning-combobox><br />
+                </div>
+              </div>
+
+              <div slot="footer">
+                <lightning-button label={customLabel.cancelButton} variant="nuetral"
+                  onclick={handleCancel}></lightning-button>
+                <lightning-button class="slds-m-left_small" label={customLabel.saveButton} variant="brand"
+                  onclick={handleValidation}></lightning-button>
+              </div>
+
+            </lightning-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

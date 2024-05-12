@@ -1,0 +1,385 @@
+<template>
+    <div if:true={showSpinner}>
+        <lightning-spinner
+            alternative-text="Loading..." variant="brand">
+        </lightning-spinner>
+    </div>
+    <div class = "pageBody">
+        <lightning-card>
+            <div class="slds-grid slds-wrap slds-grid_vertical-align-center slds-m-bottom_small">
+                <div class="slds-col slds-size_1-of-2  slds-p-horizontal_medium">
+                    <!-- Content on the left side -->
+                    <lightning-icon icon-name="custom:custom9"></lightning-icon>
+                     <span class="slds-m-left_small slds-text-heading_medium"><b>{customINVVIEWlabel.Invoice_View_Title}</b></span>
+                </div>
+                <!--Making New Button On Conditions-->
+                <template if:true={shownewBillingButton}>
+                    <div class="slds-col slds-size_1-of-2 slds-text-align_right  slds-p-horizontal_medium">
+                        <!-- "New" button on the right side -->
+                        <lightning-button variant="neutral" label={customLabel.newButton} onclick={newBillingRecordHandler}></lightning-button>
+                    </div>
+                </template>
+            </div>
+    
+            <template if:true={showBillingRecord}>
+                <lightning-card>
+                        <label class="custom-combobox-label slds-form-element__label slds-p-horizontal_small">{customINVVIEWlabel.INVVIEW_Select_Billing_Record_Heading}</label>
+                        <lightning-combobox
+                            class="slds-p-horizontal_small"
+                            label={customINVVIEWlabel.INVVIEW_Select_Billing_Record_Heading}
+                            name={customINVVIEWlabel.INVVIEW_Select_Billing_Record_Heading}
+                            options={billingRecordOptions} 
+                            onchange={selectedbillingRecordsHandler}
+                            variant="label-hidden"
+                        ></lightning-combobox>            
+                </lightning-card>
+            </template>
+            <template if:true={noOppTriggerError}>
+                <div class="slds-box slds-theme_shade slds-theme_info slds-text-align_center">
+                    <p><strong>{noOppTriggerError}</strong></p>
+                  </div>
+                </template>
+                <template if:true={invoiceProviderFromBillingError}>
+                    <div class="slds-box slds-theme_shade slds-theme_error slds-text-align_center">
+                        <p><strong>{invoiceProviderFromBillingError}</strong></p>
+                      </div>
+                    </template>
+                <template if:true={showInvoiceList}>
+                    <div class="slds-scrollable slds-m-around_medium">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-table_striped slds-max-medium-table_stacked-horizontal">
+                        <!--Header of the table-->
+                        <thead>
+                            <tr>
+
+                           <!-- <th style="text-align:left">{customINVVIEWlabel.INVVIEW_Customer_Table_Header}</th>     -->
+
+                           <th data-id="conName" onclick={sortByCustomerInv}>
+                            <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                <span class="slds-assistive-text">Sort</span>
+                                <span class="slds-truncate">{customINVVIEWlabel.INVVIEW_Customer_Table_Header}</span>
+                                <div if:true={isCustomerSort}>
+                                    <div class="slds-m-left_xx-small" if:true={isAsc}>
+                                        &#9650;
+                                    </div>
+                                    <div class="slds-m-left_xx-small" if:true={isDsc}>
+                                        &#9660;
+                                    </div>
+                                </div>
+                            </a>
+                        </th>
+                           
+                           <th data-id="oppName" onclick={sortByOpportunityInv}>
+                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                    <span class="slds-assistive-text">Sort</span>
+                                    <span class="slds-truncate">{customLabel.Opportunity_Text}</span>
+                                    <div if:true={isOpportunitySort}>
+                                        <div class="slds-m-left_xx-small" if:true={isAsc}>
+                                            &#9650;
+                                        </div>
+                                        <div class="slds-m-left_xx-small" if:true={isDsc}>
+                                            &#9660;
+                                        </div>
+                                    </div>
+                                </a>
+                            </th>
+
+                            <th data-id="accName" onclick={sortByAccountInv}>
+                                <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                                    <span class="slds-assistive-text">Sort</span>
+                                    <span class="slds-truncate">{customLabel.Account_Text}</span>
+                                    <div if:true={isAccountSort}>
+                                        <div class="slds-m-left_xx-small" if:true={isAsc}>
+                                            &#9650;
+                                        </div>
+                                        <div class="slds-m-left_xx-small" if:true={isDsc}>
+                                            &#9660;
+                                        </div>
+                                    </div>
+                                </a>
+                            </th>
+
+                            <th data-id="invoiceStatus" onclick={sortByStatusInv}>
+                                <a href="javascript:void(0);" class="centeralignTH slds-th__action slds-text-link--reset">
+                                    <span class="slds-assistive-text">Sort</span>
+                                    <span class="slds-truncate">{customINVVIEWlabel.INVVIEW_Status_Table_Header}</span>
+                                    <div if:true={isStatusSort}>
+                                        <div class="slds-m-left_xx-small" if:true={isAsc}>
+                                            &#9650;
+                                        </div>
+                                        <div class="slds-m-left_xx-small" if:true={isDsc}>
+                                            &#9660;
+                                        </div>
+                                    </div>
+                                </a>
+                            </th>
+
+                            <th data-id="invoiceAmount" onclick={sortByAmountInv}>
+                                <a href="javascript:void(0);" class="rightalignTH slds-th__action slds-text-link--reset">
+                                    <span class="slds-assistive-text">Sort</span>
+                                    <span class="slds-truncate">{customINVVIEWlabel.INVVIEW_Amount_Table_Header}</span>
+                                    <div if:true={isAmountSort}>
+                                        <div class="slds-m-left_xx-small" if:true={isAsc}>
+                                            &#9650;
+                                        </div>
+                                        <div class="slds-m-left_xx-small" if:true={isDsc}>
+                                            &#9660;
+                                        </div>
+                                    </div>
+                                </a>
+                            </th>
+
+                            <th data-id="invoiceDate" onclick={sortByInvoiceDateInv}>
+                                <a href="javascript:void(0);" class="rightalignTH slds-th__action slds-text-link--reset">
+                                    <span class="slds-assistive-text">Sort</span>
+                                    <span class="slds-truncate">{customINVVIEWlabel.INVVIEW_Invoice_Table_Header}</span>
+                                    <div if:true={isInvoiceDateSort}>
+                                        <div class="slds-m-left_xx-small" if:true={isAsc}>
+                                            &#9650;
+                                        </div>
+                                        <div class="slds-m-left_xx-small" if:true={isDsc}>
+                                            &#9660;
+                                        </div>
+                                    </div>
+                                </a>
+                            </th>
+
+                            <!-- <th style="text-align:center">{customINVVIEWlabel.INVVIEW_Status_Table_Header}</th>              
+                            <th style="text-align:right">{customINVVIEWlabel.INVVIEW_Amount_Table_Header}</th>             
+                            <th style="text-align:right">{customINVVIEWlabel.INVVIEW_Invoice_Table_Header}</th> -->
+                            <th  style="text-align:right">{customINVVIEWlabel.INVVIEW_PDF_Table_Header}</th>
+                            <th  style="text-align:right">{customINVVIEWlabel.INVVIEW_Emailed_Table_Header}</th>             
+                            <th  style="text-align:right">{customINVVIEWlabel.INVVIEW_Printed_Table_Header}</th>            
+                            </tr>              
+                        </thead>
+                        <!--Body of the table-->
+                        <tbody>
+                            <template for:each={recordsToDisplay} for:item="invoice">
+                                    <tr key={invoice.invoiceId}>
+                                        <td style="text-align:left">
+                                            <a href={invoice.conHref} target="_blank">{invoice.conName} </a>
+                                        </td> 
+                                        <td style="text-align:left">
+                                            <a href={invoice.oppHref} target="_blank">{invoice.oppName} </a>
+                                        </td>  
+                                        <td style="text-align:left">
+                                            <a href={invoice.accHref} target="_blank">{invoice.accName} </a>
+                                        </td> 
+                                        <td style="text-align:center">
+                                            {invoice.invoiceStatus}
+                                        </td> 
+                                        <td style="text-align:right">
+                                            <lightning-formatted-number data-id={indx} 
+                                                                         value= {invoice.invoiceAmount} 
+                                                                         format-style="currency"
+                                                                         currency-code="USD" currency-display-as="code"
+                                                                         maximum-fraction-digits="2"></lightning-formatted-number>
+                                        </td>
+                                        <td style="text-align:right">
+                                            {invoice.invoiceDate}
+                                        </td>
+                                        <td  style="text-align:right">
+                                        <template if:true={invoice.pdfUrl}>
+                                            <div data-id={indx}>
+                                                <lightning-icon icon-name="doctype:pdf" value={invoice.pdfUrl} size="small" onclick={showPreviewPDF}></lightning-icon>
+                                            </div>
+                                            </template>
+                                        </td>
+                                        <td  style="text-align:right">
+                                            <lightning-input  type="checkbox" checked={invoice.emailChecked} onchange={emailHandler} disabled=true></lightning-input>
+                                        </td>
+                                        <td  style="text-align:right">
+                                            <lightning-input type="checkbox" checked={invoice.printChecked} onchange={printHandler} disabled=true></lightning-input>
+                                        </td>
+                                    </tr>
+                            </template>               
+                        </tbody>
+                    </table> 
+                </div>
+                            <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread" style="padding-top: 0.5em;">
+                                <!--PAGE NAVIGATION-->
+                                <div class="slds-align_absolute-center" style="height:5rem">
+                                    <lightning-button disabled={bDisableFirst} icon-name="utility:jump_to_left" label="First" class="slds-p-horizontal_x-small" alternative-text="first page" onclick={firstPage}></lightning-button>
+                    
+                                    <lightning-button disabled={bDisableFirst} icon-name="utility:chevronleft" label="Previous" alternative-text="Previous" onclick={previousPage}></lightning-button>
+                                    &nbsp;
+                                    <span class="slds-badge">Showing {pageNumber} &nbsp;of&nbsp; {totalPages} &nbsp;&nbsp;Page(s)</span>
+                                    &nbsp;
+                                    <lightning-button disabled={bDisableLast} icon-name="utility:chevronright" label="Next" alternative-text="Next" onclick={nextPage} class="slds-p-horizontal_x-small" icon-position="right"></lightning-button>
+                    
+                                    <lightning-button disabled={bDisableLast} icon-name="utility:jump_to_right" label="Last" alternative-text="last page" onclick={lastPage} icon-position="right"></lightning-button>
+                                </div>
+                            </div>
+            </template>
+    <!---->
+    <template if:true={billingInvoiceList}>
+                <label class="slds-form-element__label slds-p-horizontal_small slds-m-bottom_x-small">{billingInvoiceCount} items</label>
+        
+                 <lightning-button class="slds-align_absolute-center slds-m-bottom_x-small" label={customINVVIEWlabel.INVVIEW_Process_Invoices_Heading} variant="Brand" onclick={processInvoiceButtonHandler}></lightning-button>
+        <div class="slds-scrollable slds-m-around_medium"> 
+        <table id='sortable' class="sortable slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-table_striped slds-max-medium-table_stacked-horizontal" >  
+            <thead>
+                <tr>
+                <!-- <th style="text-align:left">{customINVVIEWlabel.INVVIEW_Customer_Table_Header}</th> -->
+               
+                <th data-id="conName" onclick={sortByCustomerPreInv}>
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate">{customINVVIEWlabel.INVVIEW_Customer_Table_Header}</span>
+                        <div if:true={isCustomerSortPreInv}>
+                            <div  class="slds-m-left_xx-small" if:true={isAsc}>
+                                &#9650;
+                            </div>
+                            <div  class="slds-m-left_xx-small" if:true={isDsc}>
+                                &#9660;
+                            </div>
+                        </div>
+                    </a>
+                </th>
+
+                <th data-id="oppName" onclick={sortByOpportunityPreInv}>
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate">{customLabel.Opportunity_Text}</span>
+                        <div if:true={isOpportunitySortPreInv}>
+                            <div  class="slds-m-left_xx-small" if:true={isAsc}>
+                                &#9650;
+                            </div>
+                            <div  class="slds-m-left_xx-small" if:true={isDsc}>
+                                &#9660;
+                            </div>
+                        </div>
+                    </a>
+                </th>
+
+                <th data-id="accName" onclick={sortByAccountPreInv}>
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate">{customLabel.Account_Text}</span>
+                        <div if:true={isAccountSortPreInv}>
+                            <div  class="slds-m-left_xx-small" if:true={isAsc}>
+                                &#9650;
+                            </div>
+                            <div  class="slds-m-left_xx-small" if:true={isDsc}>
+                                &#9660;
+                            </div>
+                        </div>
+                    </a>
+                </th>
+
+                <th data-id="invoiceStatus" onclick={sortByStatusPreInv}>
+                    <a href="javascript:void(0);" class="centeralignTH slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate">{customINVVIEWlabel.INVVIEW_Status_Table_Header}</span>
+                        <div if:true={isStatusSortPreInv}>
+                            <div class="slds-m-left_xx-small" if:true={isAsc}>
+                                &#9650;
+                            </div>
+                            <div class="slds-m-left_xx-small" if:true={isDsc}>
+                                &#9660;
+                            </div>
+                        </div>
+                    </a>
+                </th>
+
+                <th data-id="invoiceAmount" onclick={sortByAmountPreInv}>
+                    <a href="javascript:void(0);" class="rightalignTH slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate">{customINVVIEWlabel.INVVIEW_Amount_Table_Header}</span>
+                        <div if:true={isAmountSortPreInv}>
+                            <div class="slds-m-left_xx-small" if:true={isAsc}>
+                                &#9650;
+                            </div>
+                            <div class="slds-m-left_xx-small" if:true={isDsc}>
+                                &#9660;
+                            </div>
+                        </div>
+                    </a>
+                </th>
+
+                <th data-id="invoiceDate" onclick={sortByInvoiceDatePreInv}>
+                    <a href="javascript:void(0);" class="rightalignTH slds-th__action slds-text-link--reset">
+                        <span class="slds-assistive-text">Sort</span>
+                        <span class="slds-truncate">{customINVVIEWlabel.INVVIEW_Invoice_Table_Header}</span>
+                        <div if:true={isInvoiceDateSortPreInv}>
+                            <div  class="slds-m-left_xx-small" if:true={isAsc}>
+                                &#9650;
+                            </div>
+                            <div  class="slds-m-left_xx-small" if:true={isDsc}>
+                                &#9660;
+                            </div>
+                        </div>
+                    </a>
+                </th>
+ 
+                <!-- <th style="text-align:center">{customINVVIEWlabel.INVVIEW_Status_Table_Header}</th>
+                <th style="text-align:right">{customINVVIEWlabel.INVVIEW_Amount_Table_Header}</th>
+                <th style="text-align:right">{customINVVIEWlabel.INVVIEW_Invoice_Table_Header}</th>-->
+                <th style="text-align:right"> {customINVVIEWlabel.INVVIEW_PDF_Table_Header}</th> 
+                <th style="text-align:center">{customLabel.Email_Text}</th>
+                <th style="text-align:center">{customLabel.Print_Text}</th>
+                </tr>
+            </thead>
+            <!--Body of the table-->
+            <tbody>
+                <template for:each={billingRecordsToDisplay} for:item="invoice" for:index="indx">
+                        <tr key={invoice.oppId}>
+                            <td style="text-align:left">
+                              <div data-id={indx}> {invoice.conName} </div>
+                            </td> 
+                            <td style="text-align:left">
+                                <a href={invoice.oppHref} target="_blank">{invoice.oppName} </a>
+                            </td>  
+                            <td style="text-align:left">
+                                <a href={invoice.accHref} target="_blank">{invoice.accName} </a>
+                            </td>
+                            <td style="text-align:center">
+                                <div data-id={indx}> {invoice.invoiceStatus} </div>
+                            </td> 
+                            <td style="text-align:right">
+                               <lightning-formatted-number data-id={indx} 
+                                                                         value= {invoice.invoiceAmount} 
+                                                                         format-style="currency"
+                                                                         currency-code="USD" currency-display-as="code"
+                                                                         maximum-fraction-digits="2"></lightning-formatted-number>
+                            </td> 
+                            <td style="text-align:right">
+                                <div data-id={indx}>  {invoice.invoiceDate} </div>
+                            </td>
+                            <td style="text-align:right">
+                                <template if:true={invoice.pdfUrl}>
+                                <div data-id={indx}>
+                                    <lightning-icon icon-name="doctype:pdf" value={invoice.pdfUrl} size="small" onclick={showPreviewPDF}></lightning-icon>
+                                </div>
+                                </template>
+                             </td> 
+                            <td style="text-align:center">
+                                <lightning-input data-id={invoice.indx} type="checkbox" checked={invoice.emailChecked} onchange={opportunityEmailHandler}></lightning-input>
+                             </td>
+                            <td style="text-align:center">
+                                <lightning-input data-id={invoice.indx} type="checkbox" checked={invoice.printChecked} onchange={opportunityPrintHandler}></lightning-input>
+                            </td>
+                        </tr>
+                </template>               
+            </tbody>
+        </table>  
+        </div>
+
+        <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread" style="padding-top: 0.5em;">
+            <!--PAGE NAVIGATION-->
+            <div class="slds-align_absolute-center" style="height:5rem">
+                <lightning-button disabled={bilingDisableFirst} icon-name="utility:jump_to_left" label="First" class="slds-p-horizontal_x-small" alternative-text="first page" onclick={firstBillingPage}></lightning-button>
+
+                <lightning-button disabled={bilingDisableFirst} icon-name="utility:chevronleft" label="Previous" alternative-text="Previous" onclick={previousBillingPage}></lightning-button>
+                &nbsp;
+                <span class="slds-badge">Showing {billingPageNumber} &nbsp;of&nbsp; {totalBillingPages} &nbsp;&nbsp;Page(s)</span>
+                &nbsp;
+                <lightning-button disabled={billingDisableLast} icon-name="utility:chevronright" label="Next" alternative-text="Next" onclick={nextBillingPage} class="slds-p-horizontal_x-small" icon-position="right"></lightning-button>
+
+                <lightning-button disabled={billingDisableLast} icon-name="utility:jump_to_right" label="Last" alternative-text="last page" onclick={lastBillingPage} icon-position="right"></lightning-button>
+            </div>
+        </div>
+        
+</template> 
+        </lightning-card>
+    </div>
+</template>

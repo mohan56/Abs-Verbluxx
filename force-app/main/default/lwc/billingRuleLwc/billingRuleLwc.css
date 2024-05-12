@@ -1,0 +1,58 @@
+.slds-modal__container{ 
+    max-width: 80rem !important;
+    width: 80% !important;
+    height : auto;
+  } 
+ 
+  .slds-modal__content{ 
+    height : 55vh !important; 
+    max-height: 55vh !important; 
+  } 
+
+.textButton { 
+    background:none; 
+    border:none;
+ }
+.textButtonSelected1, .textButtonSelected2, .textButtonSelected3  {
+  background-color: #92def5 !important;
+}
+
+ .button-container{
+    display: flex;
+    width:10px;
+ }
+ .button:hover {background-color: #3e8e41}
+
+ .buttonIcon{
+  --slds-c-button-radius-border: none;
+  --slds-c-button-sizing-border : 0;
+ }
+
+ .thead {
+  background-color: #3f87a6;
+  color: #fff;
+}
+
+.table {
+  border-collapse: collapse;
+  border: 2px solid rgb(200, 200, 200);
+  letter-spacing: 1px;
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  table-layout:fixed;
+} 
+
+.exampleHolder{
+  position: absolute;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+
+ .lgc-bg {
+  display: inline-block;
+}
+
+.slds-dropdown_x-small, .slds-dropdown--x-small{
+  min-width: auto;
+}

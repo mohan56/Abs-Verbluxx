@@ -1,0 +1,97 @@
+.pageBody {
+    background: rgb(255, 255, 255); 
+    position: relative; 
+    margin-top: 0px; 
+    margin-left: 4px; 
+    margin-right: 4px; 
+    min-height: 607.722px;
+    }
+    .divBody {
+    min-height: 607.722px;
+    margin-top: 60px; 
+    }
+
+    .divBodyInv {
+    background-color: rgb(94, 112, 113);
+    }
+
+    .invoiceNumber {
+    margin-top: 20%; 
+    }
+
+    .invoiceDate {
+    margin-top: 34.8%; 
+    }
+    .thead {
+    background-color: #3f87a6;
+    color: #fff;
+    }
+   
+      .slds-file-selector{
+        display: flex;
+    }
+
+    .slds-file-selector__dropzone{
+        height: 90px;
+        display: flex;
+        /* align-items: center;
+        align-content: center;
+        justify-content: center; */
+        background-color: #e6e6e6;
+    }
+
+    .slds-file-selector__button{
+        display: none;
+    }
+
+        
+/* .slds-file-selector__dropzone{
+        height: 200px;
+        width: 800px;
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        margin: auto;
+        background-color: #e6e6e6;
+    } 
+     
+    .slds-file-selector__text.slds-medium-show{
+        display:none;
+        margin-top: 100px;
+    }
+     
+    .slds-file-selector__body::after{
+        content: "Drag and drop your files here to upload or manually select them";
+        color: black;
+        margin-bottom: 50px;
+        margin-left: -230px;
+    }
+     
+    .slds-file-selector__body{
+        margin-left:100px;
+    }
+     
+    .slds-file-selector__dropzone .slds-file-selector__button{
+        font-size: 0 !important;
+        margin-Top: 40px;
+    }
+     
+   .slds-file-selector__dropzone .slds-file-selector__button:after{
+        content: 'Select Files' !important;
+        font-size: .8125rem !important;
+        color: rgba(27, 82, 151, 1.0) !important;
+    }
+     
+   .slds-button__icon {
+        display:none;
+    }
+
+    .slds-file-selector_files .slds-file-selector__body, .slds-file-selector--files .slds-file-selector__body {
+      display: flex;
+      width: 24rem;
+  } */
+
+  .textButton{
+    width: 34rem;
+  }

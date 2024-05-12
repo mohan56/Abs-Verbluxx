@@ -1,0 +1,60 @@
+/*.slds-file-selector__dropzone{
+    height: 90px;
+    width: 24rem;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    background-color: #e6e6e6;
+};
+.slds-file-selector--files.slds-file-selector__body{
+    height: 200px;
+    width: 50rem;
+};
+.slds-file-selector_files.slds-file-selector__body{
+    height: 200px;
+    width: 150rem;
+} */
+
+/*.slds-file-selector{
+    display: flex;
+}*/
+.slds-file-selector__dropzone{
+    height: 200px;
+    width: 300px;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    margin: auto;
+    background-color: #e6e6e6;
+}
+ 
+.slds-file-selector__text.slds-medium-show{
+    display:none;
+    margin-top: 100px;
+}
+ 
+.slds-file-selector__body::after{
+    content: "Drag and drop your files here to upload or manually select them";
+    color: black;
+    margin-bottom: 50px;
+    margin-left: -230px;
+}
+ 
+.slds-file-selector__body{
+    margin-left:100px;
+}
+ 
+.slds-file-selector__dropzone .slds-file-selector__button{
+    font-size: 0 !important;
+    Margin-Top: 40px;
+}
+ 
+.slds-file-selector__dropzone .slds-file-selector__button:after{
+    content: 'Select Files' !important;
+    font-size: .8125rem !important;
+    color: rgba(27, 82, 151, 1.0) !important;
+}
+ 
+.slds-button__icon {
+    display:none;
+}

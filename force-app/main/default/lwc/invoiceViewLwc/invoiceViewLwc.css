@@ -1,0 +1,22 @@
+.pageBody {
+    background: rgb(255, 255, 255);
+    position: relative;
+    margin-top: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
+    min-height: 607.722px;
+    
+}
+.custom-combobox-label {
+    font-weight: bold;
+  }
+
+.rightalignTH {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.centeralignTH {
+    display: flex;
+    justify-content: center;
+}
